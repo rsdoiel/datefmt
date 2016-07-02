@@ -38,9 +38,12 @@ import (
 	"path"
 	"strings"
 	"time"
+
+	// My package providing additional common time formats
+	"github.com/rsdoiel/timefmt"
 )
 
-const version = "v0.0.0"
+const version = timefmt.Version
 
 var (
 	showHelp    bool
@@ -93,7 +96,7 @@ func applyConstants(s string) string {
 	case "stampnano":
 		s = time.StampNano
 	case "mysql":
-		s = "2006-01-02 15:04:05"
+		s = timefmt.MySQL
 	}
 	return s
 }
@@ -113,19 +116,28 @@ func main() {
 
  For details see https://golang.org/pkg/time/#Time.Format.
 
- An additional time format is provided for convience named 
- "mysql". That format coresponds to "2006-01-02 15:04:05" 
+ An additional time layouts provided by %s
+ 
+ + mysql
+ 	+ "2006-01-02 15:04:05 -0700" 
+
  in Golang's time layout.
 
  EXAMPLE
 
-     datefmt -output RFC822 -input "2006-01-02" %s
+     %s -output RFC822 %q
 
-	  %s
+         %s
+
+     %s -input mysql -output RFC822 %q 
+
+	     %s
 
  OPTIONS
 
-`, appname, appname, now.Format("2006-01-02"), now.Format(time.RFC822))
+`, appname, appname, appname,
+			appname, now.Format(time.RFC3339), now.Format(time.RFC822),
+			appname, now.Format(timefmt.MySQL), now.Format(time.RFC822))
 
 		flag.VisitAll(func(f *flag.Flag) {
 			fmt.Printf("    -%s %s\n", f.Name, f.Usage)

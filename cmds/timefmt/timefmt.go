@@ -50,6 +50,7 @@ var (
 	showVersion bool
 	showLicense bool
 
+	useUTC bool
 	inputFormat  = time.RFC3339
 	outputFormat = time.RFC3339
 )
@@ -59,6 +60,7 @@ func init() {
 	flag.BoolVar(&showVersion, "v", false, "display version")
 	flag.BoolVar(&showLicense, "l", false, "display license")
 
+	flag.BoolVar(&useUTC, "utc", false, "timestamps in UTC")
 	flag.StringVar(&inputFormat, "input", inputFormat, "Set format for input")
 	flag.StringVar(&outputFormat, "output", outputFormat, "Set format for output")
 }
@@ -208,10 +210,10 @@ func main() {
 			if i > 0 {
 				fmt.Print(" ")
 			}
-			fmt.Printf("%s", inputDate.Local().Format(outputFormat))
+			fmt.Printf("%s", inputDate.Format(outputFormat))
 		}
 		os.Exit(0)
 	}
 	inputDate = time.Now()
-	fmt.Printf("%s", inputDate.Local().Format(outputFormat))
+	fmt.Printf("%s", inputDate.Format(outputFormat))
 }
